@@ -3,7 +3,7 @@ from Person import listPersons
 
 def updateLiftsState():
     for lift in listLifts:
-        lift.updateLiftState()
+        lift.updateState()
 
 def updatePersonsState():
     for person in listPersons:

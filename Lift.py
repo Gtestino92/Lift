@@ -1,7 +1,5 @@
 import math
 from enums import LiftMode
-from enums import PersonMode
-from enums import Floor
 
 from constants import *
 
@@ -45,7 +43,7 @@ class Lift:
         else:
             self.blockTimer -= TIMESTEP
 
-    def updateLiftState(self):
+    def updateState(self):
         if(len(self.listPositionsCalledInside) > 0):
             if(self.position == self.listPositionsCalledInside[0]):
                 self.listPositionsCalledInside = self.listPositionsCalledInside[1:]
