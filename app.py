@@ -1,5 +1,4 @@
-from asyncio import events
-import time
+from enums import Floor
 from Lift import listLifts
 from constants import *
 from Person import *
@@ -19,16 +18,20 @@ clock = pygame.time.Clock()
 
 liftBlock = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_HEIGHT, listLifts[0], "White") 
 
-floorButton = FloorButton(POS_FLOOR_INIT_X, POS_FLOOR_INIT_Y, FLOOR_WIDTH, FLOOR_HEIGHT, "Blue") 
+floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, "Blue", floorNum)  for floorNum in Floor.keys()]
 
-person2.callLift(listLifts[0])  
 
 while(running):
     #printPosition(listLifts[0], t)
     updateLiftsState()
     updatePersonsState()
+    personNumber = 0
     screen.fill("Black")
-    clicked = floorButton.draw()
+    for floorButton in floorButtonsList:
+        trigger, floorNum = floorButton.draw()
+        if (trigger): 
+            listLifts[0].callFromPosition(floorNum)
+
     liftBlock.draw()
 
     if(t == T1):
@@ -40,10 +43,9 @@ while(running):
             if event.key == pygame.K_ESCAPE: running = False
         ##elif event.type == 
         
-    if(clicked): print("CLICK")
     
-    printPosition(listLifts[0], t)
-
+    #printPosition(listLifts[0], t)
+    
     
     pygame.display.update()
     clock.tick(FPS)

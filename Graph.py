@@ -2,6 +2,7 @@ from pickle import FALSE
 import pygame
 from constants import *
 from Lift import Lift
+from enums import Floor
 
 class LiftBlock:
     def __init__(self,posX, posY, width, heigth, lift: Lift, color):
@@ -17,12 +18,12 @@ class LiftBlock:
         self.clicked = False
     
     def draw(self):
-        self.posY = POS_LIFT_INIT_Y - (int(self.lift.position * LIFT_HEIGHT))
+        self.posY = POS_LIFT_INIT_Y - (int(self.lift.position * FLOOR_HEIGHT))
         screen.blit(self.image, (self.posX, self.posY))
         
 
 class FloorButton:
-    def __init__(self,posX, posY, width, heigth, color):
+    def __init__(self,posX, posY, width, heigth, color, floor: Floor):
         self.image = pygame.Surface((width,heigth))
         self.image.fill(color)
         self.rect = self.image.get_rect()
@@ -31,6 +32,7 @@ class FloorButton:
         self.height = self.image.get_height()
         self.posX = posX
         self.posY = posY
+        self.floor = floor
         self.clicked = False
     
     def draw(self):
@@ -51,7 +53,7 @@ class FloorButton:
                         triggerAction = True
                 else:
                     self.clicked = False
-        return triggerAction
+        return triggerAction, self.floor
 
 size = (SCREEN_WIDTH, SCREEN_HEIGTH)
 screen = pygame.display.set_mode(size)

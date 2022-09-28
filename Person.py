@@ -48,8 +48,8 @@ class Person:
                             self.enter(possibleLift)        
 
 
-person1 = Person(1, Floor["PB"], Floor["P2"])
-person2 = Person(2, Floor["P3"], Floor["PB"])
-person3 = Person(3, Floor["P5"], Floor["PB"])
+person1 = Person(1, 0, 2)
+person2 = Person(2, 3, 0)
+person3 = Person(3, 5, 0)
 
-listPersons = [person1, person2]
+listPersons = []
