@@ -16,12 +16,10 @@ pygame.display.set_caption("Lift")
 
 clock = pygame.time.Clock()
 
-PosBlockInitX = int(SCREEN_WIDTH/2)  - int(BLOCK_WIDTH/2)
 
-PosBlockInitY = SCREEN_HEIGTH-BLOCK_HEIGHT
-whiteBlock = FloorButton(PosBlockInitX, PosBlockInitY, BLOCK_WIDTH, BLOCK_HEIGHT, "White") 
+liftBlock = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_HEIGHT, listLifts[0], "White") 
 
-liftBlock = FloorButton(PosBlockInitX, PosBlockInitY, BLOCK_WIDTH, BLOCK_HEIGHT, "White") 
+floorButton = FloorButton(POS_FLOOR_INIT_X, POS_FLOOR_INIT_Y, FLOOR_WIDTH, FLOOR_HEIGHT, "Blue") 
 
 person2.callLift(listLifts[0])  
 
@@ -30,8 +28,11 @@ while(running):
     updateLiftsState()
     updatePersonsState()
     screen.fill("Black")
-    #if(t == T1):
-    #    person2.callLift(listLifts[0])  
+    clicked = floorButton.draw()
+    liftBlock.draw()
+
+    if(t == T1):
+        person1.callLift(listLifts[0])  
    
     for event in pygame.event.get():
         if event.type == pygame.QUIT : running = False
@@ -39,14 +40,9 @@ while(running):
             if event.key == pygame.K_ESCAPE: running = False
         ##elif event.type == 
         
-    #if(whiteBlock.draw()): print("CLICK")
-    print(listLifts[0].position, whiteBlock.posY)
-
-    whiteBlock.posY = PosBlockInitY - (int(listLifts[0].position * BLOCK_HEIGHT))
+    if(clicked): print("CLICK")
     
-    whiteBlock.draw()
-    
-    #printPosition(listLifts[0], t)
+    printPosition(listLifts[0], t)
 
     
     pygame.display.update()
