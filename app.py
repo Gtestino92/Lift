@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 
 liftBlock = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_HEIGHT, listLifts[0], "White") 
 
-floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, "Blue", floorNum)  for floorNum in Floor.keys()]
+floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, FLOOR_COLOR, floorNum)  for floorNum in Floor.keys()]
 
 
 while(running):
@@ -33,10 +33,11 @@ while(running):
             listLifts[0].callFromPosition(floorNum)
 
     liftBlock.draw()
+    print(listLifts[0].listPositionsPendingOutside)
 
-    if(t == T1):
-        person1.callLift(listLifts[0])  
-   
+    #if(t == T1):
+    #    listPersons[0].callLift(listLifts[0]) 
+        
     for event in pygame.event.get():
         if event.type == pygame.QUIT : running = False
         elif event.type == pygame.KEYDOWN:

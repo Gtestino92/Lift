@@ -25,6 +25,7 @@ class LiftBlock:
 class FloorButton:
     def __init__(self,posX, posY, width, heigth, color, floor: Floor):
         self.image = pygame.Surface((width,heigth))
+        self.color = color
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.topleft = (posX,posY)
@@ -37,6 +38,8 @@ class FloorButton:
     
     def draw(self):
         triggerAction = False
+        self.color = FLOOR_COLOR_PRESSED if self.clicked else FLOOR_COLOR
+        self.image.fill(self.color)
         buttonPos = (self.posX, self.posY)
         mousePos = pygame.mouse.get_pos()
         screen.blit(self.image, buttonPos)
