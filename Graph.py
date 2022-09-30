@@ -34,11 +34,18 @@ class FloorButton:
         self.posX = posX
         self.posY = posY
         self.floor = floor
-        self.clicked = False
+        self.rightClicked = False
+        self.leftClicked = False
     
     def draw(self):
-        triggerAction = False
-        self.color = FLOOR_COLOR_PRESSED if self.clicked else FLOOR_COLOR
+        triggerActionOut = False
+        triggerActionIn = False
+        if(self.leftClicked):
+            self.color = FLOOR_COLOR_PRESSED_LEFT
+        elif(self.rightClicked):
+            self.color = FLOOR_COLOR_PRESSED_RIGHT
+        else: 
+            self.color = FLOOR_COLOR
         self.image.fill(self.color)
         buttonPos = (self.posX, self.posY)
         mousePos = pygame.mouse.get_pos()
@@ -47,16 +54,22 @@ class FloorButton:
         border.fill("Red")
         screen.blit(border, buttonPos)
         
-        
         if (mousePos[0] in range(self.posX, self.posX + self.width)):
             if (mousePos[1] in range(self.posY, self.posY + self.height)):
                 if pygame.mouse.get_pressed()[0] == 1:
-                    if (self.clicked == False):
-                        self.clicked = True
-                        triggerAction = True
+                    if (self.leftClicked == False):
+                        self.leftClicked = True
+                        triggerActionOut = True
                 else:
-                    self.clicked = False
-        return triggerAction, self.floor
+                    self.leftClicked = False
+                if pygame.mouse.get_pressed()[2] == 1:
+                    if (self.rightClicked == False):
+                        self.rightClicked = True
+                        triggerActionIn = True
+                else:
+                    self.rightClicked = False
+        
+        return triggerActionOut, triggerActionIn, self.floor
 
 size = (SCREEN_WIDTH, SCREEN_HEIGTH)
 screen = pygame.display.set_mode(size)
