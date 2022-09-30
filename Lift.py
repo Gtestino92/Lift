@@ -66,7 +66,7 @@ class Lift:
                 elif(self.listPositionsCalledInside[0] < math.floor(self.position) ):
                     self.mode = LiftMode.DESC
         
-        elif(len(self.listPositionsPendingOutside) > 0):
+        if(len(self.listPositionsPendingOutside) > 0):
             if(self.position == self.listPositionsPendingOutside[0]):
                 self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
                 self.mode = LiftMode.BLOCK
