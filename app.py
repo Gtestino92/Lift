@@ -1,3 +1,5 @@
+from cmath import e
+from tkinter import E
 from enums import Floor
 from Lift import listLifts
 from constants import *
@@ -22,10 +24,14 @@ floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum *
 
 
 
-### CASO: APRETAR 9 con izq, y en un piso de abajo con el der mientras está subiendo
+### CASO: APRETAR 9 con izq, y en un piso de abajo (pero arriba del lift) con el der mientras está subiendo
 while(running):
     #printPosition(listLifts[0], t)
-    updateLiftsState()
+    try:
+        updateLiftsState()
+    except Exception as err: 
+        print(err)
+        running = False
     updatePersonsState()
     personNumber = 0
     screen.fill("Black")
