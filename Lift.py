@@ -1,5 +1,5 @@
 import math
-from enums import LiftMode
+from enums import LiftMode, Floor
 from utils import splitArrayByValue
 
 from constants import *
@@ -53,7 +53,9 @@ class Lift:
             self.blockTimer -= TIMESTEP
 
     def updateState(self):
+        flagCalledInside = False
         if(len(self.listPositionsCalledInside) > 0):
+            flagCalledInside = True
             if(self.position == self.listPositionsCalledInside[0]):
                 self.listPositionsCalledInside = self.listPositionsCalledInside[1:]
                 self.mode = LiftMode.BLOCK
@@ -67,7 +69,7 @@ class Lift:
                     self.mode = LiftMode.DESC
         
         if(len(self.listPositionsPendingOutside) > 0):
-            if(self.position == self.listPositionsPendingOutside[0]):
+            if(self.position == self.listPositionsPendingOutside[0] and not (flagCalledInside and self.mode == LiftMode.ASC)):
                 self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
                 self.mode = LiftMode.BLOCK
             if(self.mode == LiftMode.STOP):
@@ -84,6 +86,9 @@ class Lift:
                 self.position -= STEP
         elif(self.mode == LiftMode.BLOCK):
             self.updateBlockTimer()
+
+        if(self.position < 0 or self.position > len(Floor) - 1):
+            raise Exception("Lift ", self.id, " out of bounds, position=", self.position)
 
 def getPossibleLiftsByFloor(floor):
     listPossibleLifts = [liftMiddle]
