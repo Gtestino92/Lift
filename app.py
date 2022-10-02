@@ -43,7 +43,7 @@ while(running):
             listLifts[0].callToPosition(floorNum)
 
     liftBlock.draw()
-    print(listLifts[0].listPositionsPendingOutside, " ", listLifts[0].listPositionsCalledInside)
+    #print(listLifts[0].listPositionsPendingOutside, " ", listLifts[0].listPositionsCalledInside)
 
     #if(t == T1):
     #    listPersons[0].callLift(listLifts[0]) 
@@ -55,7 +55,7 @@ while(running):
         ##elif event.type == 
         
     
-    #printPosition(listLifts[0], t)
+    printPosition(listLifts[0], t)
     
     
     pygame.display.update()
