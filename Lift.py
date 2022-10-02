@@ -53,9 +53,7 @@ class Lift:
             self.blockTimer -= TIMESTEP
 
     def updateState(self):
-        flagCalledInside = False
         if(len(self.listPositionsCalledInside) > 0):
-            flagCalledInside = True
             if(self.position == self.listPositionsCalledInside[0]):
                 self.listPositionsCalledInside = self.listPositionsCalledInside[1:]
                 self.mode = LiftMode.BLOCK
@@ -69,9 +67,11 @@ class Lift:
                     self.mode = LiftMode.DESC
         
         if(len(self.listPositionsPendingOutside) > 0):
-            if(self.position == self.listPositionsPendingOutside[0] and not (flagCalledInside and self.mode == LiftMode.ASC)):
-                self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
-                self.mode = LiftMode.BLOCK
+            if(self.position == self.listPositionsPendingOutside[0]):
+                ## SI EL LLAMADO INSIDE ESTA ARRIBA, NO QUIERO QUE ENTRE ACÁ
+                if(not (len(self.listPositionsCalledInside) > 0 and self.position < self.listPositionsCalledInside[0])):
+                    self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
+                    self.mode = LiftMode.BLOCK
             if(self.mode == LiftMode.STOP):
                 self.callFromPosition(self.listPositionsPendingOutside[0])
         
