@@ -69,7 +69,8 @@ class Lift:
         if(len(self.listPositionsPendingOutside) > 0):
             if(self.position == self.listPositionsPendingOutside[0]):
                 ## SI EL LLAMADO INSIDE ESTA ARRIBA, NO QUIERO QUE ENTRE ACÁ
-                if(not (len(self.listPositionsCalledInside) > 0 and self.position < self.listPositionsCalledInside[0])):
+                print(self.position, " ", self.listPositionsCalledInside, " ", self.listPositionsPendingOutside)
+                if(not (len(self.listPositionsCalledInside) > 0 and self.position < self.listPositionsCalledInside[0] and LiftMode.DESC != self.mode)): ## VER ULTIMA CLAUSULA
                     self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
                     self.mode = LiftMode.BLOCK
             if(self.mode == LiftMode.STOP):
