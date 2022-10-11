@@ -6,6 +6,7 @@ class LiftMode:
     DESC = "DESC"
 
 class PersonMode:
+    INIT = "INIT"
     WAIT = "WAIT"
     IN = "IN"
     OUT = "OUT"

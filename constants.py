@@ -1,11 +1,13 @@
 from decimal import Decimal
+K = 10 #debe ser divisor de 100
+FPS = 60
 
-BLOCK_TIMER_MAX = 100
+BLOCK_TIMER_MAX = 5 * FPS / K
 CAPACITY_MAX = 3
 #TIMESTEP = Decimal(0.01).__round__(2)
 TIMESTEP = 1
-FPS = 60
-STEP = Decimal(0.02).__round__(2)
+
+STEP = K * Decimal(0.01).__round__(2)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGTH = 800
@@ -28,4 +30,10 @@ FLOOR_COLOR_PRESSED_RIGHT = "Yellow"
 
 END = 10
 T1 = FPS * 2
-T2 = 300
+T2 = FPS * 4
+
+T_EVENT_PERSON_SEG = 20
+T_EVENT_PERSON_MS = T_EVENT_PERSON_SEG * 1000
+T_EVENT_PERSON = int(T_EVENT_PERSON_MS/ K)
+
+MAX_TOTALS = 100

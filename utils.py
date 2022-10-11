@@ -1,8 +1,8 @@
 def splitArrayByValue(array, value):
-    arrayLower = []
-    arrayGreaterEq = []
+    arrayLowerEq = []
+    arrayGreater = []
     for x in array:
-        if(x < value): arrayLower.append(x)
-        else: arrayGreaterEq.append(x)
+        if(x > value): arrayGreater.append(x)
+        else: arrayLowerEq.append(x)
     
-    return arrayLower, arrayGreaterEq
+    return arrayLowerEq, arrayGreater
