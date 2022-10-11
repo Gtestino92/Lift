@@ -14,39 +14,39 @@ class Lift:
         self.mode = LiftMode.STOP
         self.blockTimer = BLOCK_TIMER_MAX
     
-    ######################## VER CODIGO REPETIDO ##################################
     def callFromPosition(self, positionFrom: int): 
         if(positionFrom in self.listPositionsPendingOutside): return
         self.listPositionsPendingOutside.append(positionFrom)
         ## DIVIDO EL ARRAY CON self.position
-        listPositionsLwr, listPositionsGrEq = splitArrayByValue(self.listPositionsPendingOutside, math.floor(self.position))
+        listPositionsLwrEq, listPositionsGr = splitArrayByValue(self.listPositionsPendingOutside, self.getFloor())
         ## ORDENO UNO U OTRO DEP DE ESTADO
-        listPositionsGrEq.sort()
-        listPositionsLwr.sort(reverse=True)
+        listPositionsGr.sort(reverse=True)
+        listPositionsLwrEq.sort(reverse=True)
+        #print(self.mode, " ", listPositionsGrEq, " ", listPositionsLwr)
         if(self.mode == LiftMode.DESC ):
-            self.listPositionsPendingOutside = listPositionsLwr + listPositionsGrEq
+            self.listPositionsPendingOutside = listPositionsLwrEq + listPositionsGr
         elif(self.mode == LiftMode.ASC):
-            self.listPositionsPendingOutside = listPositionsGrEq + listPositionsLwr
+            self.listPositionsPendingOutside = listPositionsGr + listPositionsLwrEq
           
 
     def callToPosition(self, positionTo: int): 
         if(positionTo in self.listPositionsCalledInside): return
         self.listPositionsCalledInside.append(positionTo)
         ## DIVIDO EL ARRAY CON self.position
-        listPositionsLwr, listPositionsGrEq = splitArrayByValue(self.listPositionsCalledInside, math.floor(self.position))
+        listPositionsLwrEq, listPositionsGr = splitArrayByValue(self.listPositionsCalledInside, self.getFloor())
         ## ORDENO UNO U OTRO DEP DE ESTADO
-        listPositionsGrEq.sort()
-        listPositionsLwr.sort(reverse=True)
+        listPositionsGr.sort()
+        listPositionsLwrEq.sort(reverse=True)
         if(self.mode == LiftMode.DESC ):
-            self.listPositionsCalledInside = listPositionsLwr + listPositionsGrEq
+            self.listPositionsCalledInside = listPositionsLwrEq + listPositionsGr
         elif(self.mode == LiftMode.ASC):
-            self.listPositionsCalledInside = listPositionsGrEq + listPositionsLwr
+            self.listPositionsCalledInside = listPositionsGr + listPositionsLwrEq
 
     def getFloor(self):
         return int(math.floor(self.position))
 
     def updateBlockTimer(self):
-        if(self.blockTimer == 0):
+        if(self.blockTimer <= 0):
             self.mode = LiftMode.STOP
             self.blockTimer = BLOCK_TIMER_MAX
         else:
@@ -55,6 +55,11 @@ class Lift:
     def updateState(self):
         if(len(self.listPositionsCalledInside) > 0):
             if(self.position == self.listPositionsCalledInside[0]):
+
+                ## SI TMB HABIA SIDO LLAMADO DESDE AFUERA, LO SACO
+                if(self.position in self.listPositionsPendingOutside):
+                    self.listPositionsPendingOutside.remove(self.position)
+
                 self.listPositionsCalledInside = self.listPositionsCalledInside[1:]
                 self.mode = LiftMode.BLOCK
             
@@ -69,7 +74,6 @@ class Lift:
         if(len(self.listPositionsPendingOutside) > 0):
             if(self.position == self.listPositionsPendingOutside[0]):
                 ## SI EL LLAMADO INSIDE ESTA ARRIBA, NO QUIERO QUE ENTRE ACÁ
-                print(self.position, " ", self.listPositionsCalledInside, " ", self.listPositionsPendingOutside)
                 if(not (len(self.listPositionsCalledInside) > 0 and self.position < self.listPositionsCalledInside[0] and LiftMode.DESC != self.mode)): ## VER ULTIMA CLAUSULA
                     self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
                     self.mode = LiftMode.BLOCK

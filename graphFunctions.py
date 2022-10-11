@@ -1,9 +1,13 @@
+from typing import List
 from Lift import Lift
+from Person import Person
+from constants import FPS, K
 
-def printPosition(lift: Lift, time):
-    print("t=", time, "  ",  
+def printInformation(lift: Lift, listPersons: List[Person], time):
+    print("t(seg)=", "{:.2f}".format(time*K/FPS), "  ",  
         "pos=", lift.position, "  " , 
         lift.mode , "  ", 
         "pendOutside=", lift.listPositionsPendingOutside, "  ", 
         "callInside=", lift.listPositionsCalledInside, "  ",
-        "cant=", len(lift.listPersonsIn))
+        "cantIn=", len(lift.listPersonsIn), " ",
+        "cantPersons=", len(listPersons), "  ",)
