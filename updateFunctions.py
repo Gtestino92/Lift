@@ -4,6 +4,7 @@ from enums import PersonMode
 from constants import K,FPS
 
 listTimesTotal = []
+longTimesFloorList = {}
 
 def updateLiftsState():
     for lift in listLifts:
@@ -13,13 +14,16 @@ def updatePersonsState():
     for person in listPersons:
         person: Person
         person.updateState()
-        if person.mode == PersonMode.OUT: listTimesTotal.append(person.timeTotal*K/FPS)
-
+        if person.mode == PersonMode.OUT: 
+            outPersonTime = person.timeTotal*K/FPS
+            listTimesTotal.append(outPersonTime)
+            if(outPersonTime>100):
+                longTimesFloorList[person.id] = (person.startingFloor, person.wantedFloor, outPersonTime)
+            
 def updateListPersons():
     for person in listPersons:
         person: Person
         if(PersonMode.OUT == person.mode):
             listPersons.remove(person)
-        elif(PersonMode.INIT == person.mode):
-            person.callLift(listLifts[0])
+        
 

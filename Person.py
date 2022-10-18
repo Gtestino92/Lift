@@ -1,3 +1,4 @@
+from numpy import iterable
 from Lift import *
 from enums import LiftMode
 from enums import PersonMode
@@ -7,27 +8,34 @@ from constants import *
 import itertools
 import random
 
+iter = itertools.count()
 class Person:
     def __init__(self, floor: int, wantedFloor: int):
-        self.id = next(itertools.count())
+        self.id = next(iter)
         self.floor = floor
+        self.startingFloor = floor
         self.wantedFloor = wantedFloor
-        self.mode = PersonMode.INIT
+        self.mode = PersonMode.WAIT
         self.timeTotal = 0
         self.lift = None
+        self.calledLifts = []
 
     def callLift(self, lift: Lift):
-        self.mode = PersonMode.WAIT
+        #self.lift = lift
+        self.calledLifts.append(lift)
         lift.callFromPosition(self.floor)
 
     def enter(self, lift: Lift):
+        self.calledLifts = []
         if (len(lift.listPersonsIn) == CAPACITY_MAX):
             print("OLEEE")
+            #self.lift.callFromPosition(self.wantedFloor)
             return
         self.lift = lift
         self.lift.listPersonsIn.append(self)
         self.mode = PersonMode.IN
         self.lift.mode = LiftMode.BLOCK
+        self.lift.resetBlockTimer()
         self.lift.callToPosition(self.wantedFloor)
     
     def leave(self):
@@ -54,7 +62,11 @@ class Person:
                     if(self.floor == possibleLift.position):
                         if (possibleLift.mode in [LiftMode.BLOCK, LiftMode.STOP]):
                             self.enter(possibleLift) 
+                    else:
+                        if(possibleLift not in self.calledLifts):
+                            self.callLift(possibleLift)
         self.timeTotal += TIMESTEP       
+
 
 def createNewRandPerson():
     newPerson : Person
@@ -68,6 +80,17 @@ def createNewRandPerson():
         print("COMING PERSON CREATED")
     listPersons.append(newPerson)
     
+def createNewRandLeavingPerson():
+    possibleFloors = list(Floor.keys())
+    possibleFloors.remove(0)
+    newPerson = Person(random.choice(possibleFloors), 0)
+    print("LEAVING PERSON CREATED")
+    listPersons.append(newPerson)
+
+def createNewRandEnteringPerson(floorNum):
+    newPerson = Person(0, floorNum)
+    print("COMING PERSON CREATED")
+    listPersons.append(newPerson)
 
 #person1 = Person(3, 0)
 #person2 = Person(0, 5)

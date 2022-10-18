@@ -1,6 +1,3 @@
-from cmath import e
-from tkinter import E
-from venv import create
 from enums import Floor
 from Lift import listLifts
 from constants import *
@@ -28,10 +25,10 @@ floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum *
 createPersonCallEvent = pygame.USEREVENT
 pygame.time.set_timer(createPersonCallEvent, T_EVENT_PERSON)
 
-
 #### AGREGAR: VER COMO SE COMPORTA EL LIFT AL MAX DE CAPACIDAD!!!!
 
 ## TODO: AGREGAR EN EVENTO PARA VISUALIZAR LINEA TEMPORAL DE CANT PERSONS!!!
+## TODO: hay un problema con algun colgado. En algun caso (apretar 4 en PB), no llama despues de ser rechazado. Quizas es por los calledLifts
 
 while(running):
     #printPosition(listLifts[0], t)
@@ -47,7 +44,10 @@ while(running):
     for floorButton in floorButtonsList:
         triggerOut, triggerIn, floorNum = floorButton.draw()
         if (triggerOut): 
-            listLifts[0].callFromPosition(floorNum)
+            if(floorNum == 0):
+                createNewRandLeavingPerson()
+            else:
+                createNewRandEnteringPerson(floorNum)
         #if (triggerIn): 
         #    listLifts[0].callToPosition(floorNum)
 
@@ -62,7 +62,7 @@ while(running):
             if event.key == pygame.K_ESCAPE: running = False
         
     
-    if(len(listTimesTotal) == MAX_TOTALS): running = False
+    if(len(listTimesTotal) >= MAX_TOTALS): running = False
 
     printInformation(listLifts[0], listPersons, t)
     
@@ -71,12 +71,15 @@ while(running):
     clock.tick(FPS)
     t += TIMESTEP
 
-print("Tiempos: ", listTimesTotal) 
+#print("Tiempos: ", listTimesTotal) 
 print("Promedio de tiempos: ", np.mean(listTimesTotal)) 
 print("Desvio de tiempos: ", np.std(listTimesTotal))
+
+print("Pisos que quedaron colgados: ", longTimesFloorList)
+counts, bins = np.histogram(listTimesTotal)
+plt.hist(bins[: -1], bins, weights = counts)
+plt.show()
+
 pygame.quit()
 
-#counts, bins = np.histogram(listTimesTotal)
-#plt.hist(bins[:-1], bins, weights=counts)
-#plt.show()
 

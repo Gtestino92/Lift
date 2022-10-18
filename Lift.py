@@ -48,9 +48,12 @@ class Lift:
     def updateBlockTimer(self):
         if(self.blockTimer <= 0):
             self.mode = LiftMode.STOP
-            self.blockTimer = BLOCK_TIMER_MAX
+            self.resetBlockTimer()
         else:
             self.blockTimer -= TIMESTEP
+
+    def resetBlockTimer(self):
+        self.blockTimer = BLOCK_TIMER_MAX
 
     def updateState(self):
         if(len(self.listPositionsCalledInside) > 0):

@@ -1,5 +1,5 @@
 from decimal import Decimal
-K = 10 #debe ser divisor de 100
+K = 5 #debe ser divisor de 100
 FPS = 60
 
 BLOCK_TIMER_MAX = 5 * FPS / K
@@ -36,4 +36,4 @@ T_EVENT_PERSON_SEG = 20
 T_EVENT_PERSON_MS = T_EVENT_PERSON_SEG * 1000
 T_EVENT_PERSON = int(T_EVENT_PERSON_MS/ K)
 
-MAX_TOTALS = 100
+MAX_TOTALS = 10000
