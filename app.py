@@ -1,10 +1,12 @@
+import pygame
+pygame.font.init()
+
 from enums import Floor
 from Lift import listLifts
 from constants import *
 from Person import *
 from updateFunctions import *
 from graphFunctions import * 
-import pygame
 from Graph import * 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,8 +20,6 @@ pygame.display.set_caption("Lift")
 clock = pygame.time.Clock()
 
 
-liftBlock = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_HEIGHT, listLifts[0], "White") 
-
 floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, FLOOR_COLOR, floorNum)  for floorNum in Floor.keys()]
 
 createPersonCallEvent = pygame.USEREVENT
@@ -30,17 +30,19 @@ pygame.time.set_timer(createPersonCallEvent, T_EVENT_PERSON)
 ## TODO: AGREGAR EN EVENTO PARA VISUALIZAR LINEA TEMPORAL DE CANT PERSONS!!!
 ## TODO: hay un problema con algun colgado. En algun caso (apretar 4 en PB), no llama despues de ser rechazado. Quizas es por los calledLifts
 
+
 while(running):
     #printPosition(listLifts[0], t)
+    screen.fill("Black")
+
     try:
         updateLiftsState()
+        updatePersonsState()
+        updateListPersons()
     except Exception as err: 
         print(err)
         running = False
-    updatePersonsState()
-    updateListPersons()
 
-    screen.fill("Black")
     for floorButton in floorButtonsList:
         triggerOut, triggerIn, floorNum = floorButton.draw()
         if (triggerOut): 
@@ -52,8 +54,14 @@ while(running):
         #    listLifts[0].callToPosition(floorNum)
 
 
-    liftBlock.draw()
+    for liftBlock in listLiftBlocks:
+        liftBlock.draw()
     
+    cantPersonsWaiting = font.render(str(len(listPersons) - len(liftBlock.lift.listPersonsIn)), True, (255,255,255))
+    screen.blit(cantPersonsWaiting, (0,0))
+    cantPersonsOut = font.render(str(len(listTimesTotal)), True, (255,255,255))
+    screen.blit(cantPersonsOut, ((SCREEN_WIDTH - cantPersonsOut.get_width()),0))
+
     for event in pygame.event.get():
         if event.type == createPersonCallEvent:
             createNewRandPerson()
