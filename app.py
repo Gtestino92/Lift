@@ -57,7 +57,7 @@ while(running):
     for liftBlock in listLiftBlocks:
         liftBlock.draw()
     
-    cantPersonsWaiting = font.render(str(len(listPersons) - len(liftBlock.lift.listPersonsIn)), True, (255,255,255))
+    cantPersonsWaiting = font.render(str(len(listPersons)), True, (255,255,255))
     screen.blit(cantPersonsWaiting, (0,0))
     cantPersonsOut = font.render(str(len(listTimesTotal)), True, (255,255,255))
     screen.blit(cantPersonsOut, ((SCREEN_WIDTH - cantPersonsOut.get_width()),0))
