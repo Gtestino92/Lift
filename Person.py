@@ -29,13 +29,11 @@ class Person:
         self.calledLifts = []
         if (len(lift.listPersonsIn) == CAPACITY_MAX):
             print("OLEEE")
-            #self.lift.callFromPosition(self.wantedFloor)
             return
         self.lift = lift
         self.lift.listPersonsIn.append(self)
         self.mode = PersonMode.IN
-        self.lift.mode = LiftMode.BLOCK
-        self.lift.resetBlockTimer()
+        self.lift.startBlock()
         self.lift.callToPosition(self.wantedFloor)
     
     def leave(self):
@@ -74,26 +72,21 @@ def createNewRandPerson():
     possibleFloors.remove(0)
     if(random.choice([0,1]) == 0):      
         newPerson = Person(random.choice(possibleFloors), 0)
-        print("LEAVING PERSON CREATED")
     else:
         newPerson = Person(0, random.choice(possibleFloors))
-        print("COMING PERSON CREATED")
     listPersons.append(newPerson)
     
 def createNewRandLeavingPerson():
     possibleFloors = list(Floor.keys())
     possibleFloors.remove(0)
     newPerson = Person(random.choice(possibleFloors), 0)
-    print("LEAVING PERSON CREATED")
     listPersons.append(newPerson)
 
 def createNewRandEnteringPerson(floorNum):
     newPerson = Person(0, floorNum)
-    print("COMING PERSON CREATED")
     listPersons.append(newPerson)
 
-#person1 = Person(3, 0)
-#person2 = Person(0, 5)
-#person3 = Person(5, 0)
 
 listPersons = []
+
+listTimesTotal = []

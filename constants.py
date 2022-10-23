@@ -2,7 +2,8 @@ from decimal import Decimal
 K = 100 #debe ser divisor de 100
 FPS = 60
 
-BLOCK_TIMER_MAX = 5 * FPS / K
+T_BLOCK_SEG = 5
+T_BLOCK_TIMER = int(T_BLOCK_SEG * 1000 / K)
 CAPACITY_MAX = 3
 #TIMESTEP = Decimal(0.01).__round__(2)
 TIMESTEP = 1
@@ -33,7 +34,7 @@ T1 = FPS * 2
 T2 = FPS * 4
 
 
-T_EVENT_PERSON_SEG = 20
+T_EVENT_PERSON_SEG = 30
 T_EVENT_PERSON_MS = T_EVENT_PERSON_SEG * 1000
 T_EVENT_PERSON = int(T_EVENT_PERSON_MS/ K)
 

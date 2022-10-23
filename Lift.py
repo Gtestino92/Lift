@@ -12,7 +12,6 @@ class Lift:
         self.listPositionsPendingOutside = []
         self.listPositionsCalledInside = []
         self.mode = LiftMode.STOP
-        self.blockTimer = BLOCK_TIMER_MAX
     
     def callFromPosition(self, positionFrom: int): 
         if(positionFrom in self.listPositionsPendingOutside): return
@@ -22,7 +21,6 @@ class Lift:
         ## ORDENO UNO U OTRO DEP DE ESTADO
         listPositionsGr.sort(reverse=True)
         listPositionsLwrEq.sort(reverse=True)
-        #print(self.mode, " ", listPositionsGrEq, " ", listPositionsLwr)
         if(self.mode == LiftMode.DESC ):
             self.listPositionsPendingOutside = listPositionsLwrEq + listPositionsGr
         elif(self.mode == LiftMode.ASC):
@@ -45,15 +43,8 @@ class Lift:
     def getFloor(self):
         return int(math.floor(self.position))
 
-    def updateBlockTimer(self):
-        if(self.blockTimer <= 0):
-            self.mode = LiftMode.STOP
-            self.resetBlockTimer()
-        else:
-            self.blockTimer -= TIMESTEP
-
-    def resetBlockTimer(self):
-        self.blockTimer = BLOCK_TIMER_MAX
+    def startBlock(self):
+        self.mode = LiftMode.SET_BLOCK
 
     def updateState(self):
         if(len(self.listPositionsCalledInside) > 0):
@@ -64,7 +55,7 @@ class Lift:
                     self.listPositionsPendingOutside.remove(self.position)
 
                 self.listPositionsCalledInside = self.listPositionsCalledInside[1:]
-                self.mode = LiftMode.BLOCK
+                self.startBlock()
             
             if(self.mode == LiftMode.STOP):
                 self.callToPosition(self.listPositionsCalledInside[0])
@@ -79,7 +70,7 @@ class Lift:
                 ## SI EL LLAMADO INSIDE ESTA ARRIBA, NO QUIERO QUE ENTRE ACÁ
                 if(not (len(self.listPositionsCalledInside) > 0 and self.position < self.listPositionsCalledInside[0] and LiftMode.DESC != self.mode)): ## VER ULTIMA CLAUSULA
                     self.listPositionsPendingOutside = self.listPositionsPendingOutside[1:]
-                    self.mode = LiftMode.BLOCK
+                    self.startBlock()
             if(self.mode == LiftMode.STOP):
                 self.callFromPosition(self.listPositionsPendingOutside[0])
         
@@ -92,8 +83,6 @@ class Lift:
             self.position += STEP
         elif(self.mode == LiftMode.DESC):
                 self.position -= STEP
-        elif(self.mode == LiftMode.BLOCK):
-            self.updateBlockTimer()
 
         if(self.position < 0 or self.position > len(Floor) - 1):
             raise Exception("Lift ", self.id, " out of bounds, position=", self.position)

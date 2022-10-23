@@ -1,6 +1,7 @@
 
 class LiftMode:
     STOP = "STOP"
+    SET_BLOCK = "SET_BLOCK"
     BLOCK = "BLOCK"
     ASC = "ASC"
     DESC = "DESC"

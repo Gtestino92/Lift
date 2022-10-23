@@ -1,7 +1,7 @@
 import pygame
 from constants import *
 from Lift import Lift, listLifts
-from Person import Person
+from Person import Person, listPersons, listTimesTotal
 from enums import Floor
 
 class LiftBlock:
@@ -27,7 +27,6 @@ class LiftBlock:
 class PersonBlock():
     def __init__(self,posX, posY, width, heigth, person: Person):
         self.image = pygame.Surface((width,int(heigth*19/20)))
-        #self.image.fill(color) # DEP DEL ESTADO
         self.rect = self.image.get_rect()
         self.rect.topleft = (posX,posY)
         self.width = self.image.get_width()
@@ -91,7 +90,14 @@ class FloorButton:
                     self.rightClicked = False
         
         return triggerActionOut, triggerActionIn, self.floor
+
+def drawMetrics():
+    cantPersonsWaiting = font.render(str(len(listPersons)), True, (255,255,255))
+    screen.blit(cantPersonsWaiting, (0,0))
+    cantPersonsOut = font.render(str(len(listTimesTotal)), True, (255,255,255))
+    screen.blit(cantPersonsOut, ((SCREEN_WIDTH - cantPersonsOut.get_width()),0))
     
+
 size = (SCREEN_WIDTH, SCREEN_HEIGTH)
 screen = pygame.display.set_mode(size)
 font = pygame.font.Font('freesansbold.ttf', 32)
