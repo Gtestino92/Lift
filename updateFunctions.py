@@ -1,7 +1,10 @@
 from Lift import listLifts
 from Person import listPersons, Person, listTimesTotal
 from enums import PersonMode
-from constants import K,FPS
+import pygame.time as time
+from constants import K
+
+longTimesFloorsList = {}
 
 def updateLiftsState():
     for lift in listLifts:
@@ -12,8 +15,12 @@ def updatePersonsState():
         person: Person
         person.updateState()
         if person.mode == PersonMode.OUT: 
-            outPersonTime = person.timeTotal*K/FPS
-            listTimesTotal.append(outPersonTime)
+            timeEnd = time.get_ticks()
+            print(timeEnd)
+            timeElapsed = (timeEnd-person.timeStart)*K/1000
+            listTimesTotal.append(timeElapsed)
+            if(timeElapsed>200):
+                longTimesFloorsList[person.id] = (person.startingFloor, person.wantedFloor, timeElapsed)
             
 def updateListPersons():
     for person in listPersons:

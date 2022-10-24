@@ -19,10 +19,6 @@ pygame.display.set_caption("Lift")
 
 clock = pygame.time.Clock()
 
-
-floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, FLOOR_COLOR, floorNum)  for floorNum in Floor.keys()]
-
-
 ## TODO: AGREGAR EN EVENTO PARA VISUALIZAR LINEA TEMPORAL DE CANT PERSONS!!!
 
 ## TODO: falta corregir lo del time total en personas
@@ -57,6 +53,8 @@ while(running):
 #print("Tiempos: ", listTimesTotal) 
 print("Promedio de tiempos: ", np.mean(listTimesTotal)) 
 print("Desvio de tiempos: ", np.std(listTimesTotal))
+
+print("Tiempos mucha espera: ", longTimesFloorsList) 
 
 counts, bins = np.histogram(listTimesTotal)
 plt.hist(bins[: -1], bins, weights = counts)

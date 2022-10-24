@@ -103,5 +103,6 @@ screen = pygame.display.set_mode(size)
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 liftBlockMiddle = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_HEIGHT, listLifts[0], "White") 
+floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, FLOOR_COLOR, floorNum)  for floorNum in Floor.keys()]
 
 listLiftBlocks = [liftBlockMiddle]

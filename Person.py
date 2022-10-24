@@ -1,4 +1,3 @@
-from numpy import iterable
 from Lift import *
 from enums import LiftMode
 from enums import PersonMode
@@ -7,6 +6,7 @@ from enums import Floor
 from constants import *
 import itertools
 import random
+import pygame.time as time
 
 iter = itertools.count()
 class Person:
@@ -16,7 +16,8 @@ class Person:
         self.startingFloor = floor
         self.wantedFloor = wantedFloor
         self.mode = PersonMode.WAIT
-        self.timeTotal = 0
+        self.timeStart = time.get_ticks()
+        print(self.timeStart)
         self.lift = None
         self.calledLifts = []
 
@@ -62,8 +63,7 @@ class Person:
                             self.enter(possibleLift) 
                     else:
                         if(possibleLift not in self.calledLifts):
-                            self.callLift(possibleLift)
-        self.timeTotal += TIMESTEP       
+                            self.callLift(possibleLift)       
 
 
 def createNewRandPerson():
@@ -90,3 +90,4 @@ def createNewRandEnteringPerson(floorNum):
 listPersons = []
 
 listTimesTotal = []
+
