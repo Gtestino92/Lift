@@ -1,12 +1,13 @@
 import pygame
 from constants import *
 from Lift import Lift, listLifts
-from Person import Person, listPersons, listTimesTotal
+from Person import Person, listTimesTotal
 from enums import Floor, PersonMode
+import random
 
 class LiftBlock:
-    def __init__(self,posX, posY, width, heigth, lift: Lift, color):
-        self.image = pygame.Surface((width,int(heigth*19/20)))
+    def __init__(self,posX, posY, lift: Lift, color):
+        self.image = pygame.Surface((LIFT_WIDTH,int(LIFT_HEIGHT*19/20)))
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.topleft = (posX,posY)
@@ -25,14 +26,15 @@ class LiftBlock:
 
 
 class PersonBlock():
-    def __init__(self,posX, posY, width, heigth, person: Person):
-        self.image = pygame.Surface((width,int(heigth*18/20)))
+    def __init__(self, person: Person):
+        self.image = pygame.Surface((PERSON_WIDTH,int(PERSON_HEIGHT*18/20)))
+        self.image.fill("Red")
         self.rect = self.image.get_rect()
-        self.rect.topleft = (posX,posY)
+        self.rect.topleft = (POS_PERSON_INIT_X,POS_PERSON_INIT_Y)
         self.width = self.image.get_width()
         self.height = self.image.get_height() 
-        self.posX = posX
-        self.posY = posY
+        self.posX = POS_PERSON_INIT_X
+        self.posY = POS_PERSON_INIT_Y
         self.person = person
     
     def draw(self):
@@ -91,17 +93,36 @@ class FloorButton:
         return triggerActionOut, triggerActionIn, self.floor
 
 def drawMetrics():
-    cantPersonsWaiting = font.render(str(len(listPersons)), True, (255,255,255))
+    cantPersonsWaiting = font.render(str(len(listPersonBlocks)), True, (255,255,255))
     screen.blit(cantPersonsWaiting, (0,0))
     cantPersonsOut = font.render(str(len(listTimesTotal)), True, (255,255,255))
     screen.blit(cantPersonsOut, ((SCREEN_WIDTH - cantPersonsOut.get_width()),0))
     
 
+def createNewRandPerson():
+    possibleFloors = list(Floor.keys())
+    possibleFloors.remove(0)
+    if(random.choice([0,1]) == 0):      
+        newPerson = Person(random.choice(possibleFloors), 0)
+    else:
+        newPerson = Person(0, random.choice(possibleFloors))
+    listPersonBlocks.append(PersonBlock(newPerson))
+    
+def createNewRandLeavingPerson():
+    possibleFloors = list(Floor.keys())
+    possibleFloors.remove(0)
+    newPerson = PersonBlock(random.choice(possibleFloors), 0)
+    listPersonBlocks.append(PersonBlock(newPerson))
+
+def createNewRandEnteringPerson(floorNum):
+    newPerson = Person(0, floorNum)
+    listPersonBlocks.append(PersonBlock(newPerson))
+
 size = (SCREEN_WIDTH, SCREEN_HEIGTH)
 screen = pygame.display.set_mode(size)
 font = pygame.font.Font('freesansbold.ttf', 32)
 
-liftBlockMiddle = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_HEIGHT, listLifts[0], "White") 
+liftBlockMiddle = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, listLifts[0], "White") 
 floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, FLOOR_COLOR, floorNum)  for floorNum in Floor.keys()]
 
 listLiftBlocks = [liftBlockMiddle]

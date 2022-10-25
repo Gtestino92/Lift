@@ -1,6 +1,6 @@
-from cProfile import run
 from typing import List
 from Person import *
+from Graph import createNewRandPerson
 import pygame
 from Lift import *
 

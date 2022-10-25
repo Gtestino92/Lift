@@ -1,5 +1,5 @@
 from decimal import Decimal
-K = 100 #debe ser divisor de 100
+K = 5 #debe ser divisor de 100
 FPS = 60
 
 T_BLOCK_SEG = 5

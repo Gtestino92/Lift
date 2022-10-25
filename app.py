@@ -37,7 +37,7 @@ while(running):
     try:
         updateLiftsState()
         updatePersonsState()
-        updateListPersons()
+        updateListPersonBlocks()
     except Exception as err: 
         print(err)
         running = False
@@ -46,7 +46,7 @@ while(running):
     
     handleBlockingLifts()
 
-    printInformation(listLifts[0], listPersons)
+    printInformation(listLifts[0], listPersonBlocks)
 
     pygame.display.update()
     clock.tick(FPS)

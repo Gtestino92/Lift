@@ -5,7 +5,6 @@ from typing import List
 from enums import Floor
 from constants import *
 import itertools
-import random
 import pygame.time as time
 
 iter = itertools.count()
@@ -64,30 +63,6 @@ class Person:
                     else:
                         if(possibleLift not in self.calledLifts):
                             self.callLift(possibleLift)       
-
-
-def createNewRandPerson():
-    newPerson : Person
-    possibleFloors = list(Floor.keys())
-    possibleFloors.remove(0)
-    if(random.choice([0,1]) == 0):      
-        newPerson = Person(random.choice(possibleFloors), 0)
-    else:
-        newPerson = Person(0, random.choice(possibleFloors))
-    listPersons.append(newPerson)
-    
-def createNewRandLeavingPerson():
-    possibleFloors = list(Floor.keys())
-    possibleFloors.remove(0)
-    newPerson = Person(random.choice(possibleFloors), 0)
-    listPersons.append(newPerson)
-
-def createNewRandEnteringPerson(floorNum):
-    newPerson = Person(0, floorNum)
-    listPersons.append(newPerson)
-
-
-listPersons = []
 
 listTimesTotal = []
 
