@@ -9,4 +9,4 @@ def printInformation(lift: Lift, listPersons: List[Person]):
         "pendOutside=", lift.listPositionsPendingOutside, "  ", 
         "callInside=", lift.listPositionsCalledInside, "  ",
         "cantIn=", len(lift.listPersonsIn), " ",
-        "cantPersons=", len(listPersons), "  ",)
+        "cantPersons=", len(listPersons))

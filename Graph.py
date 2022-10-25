@@ -2,7 +2,7 @@ import pygame
 from constants import *
 from Lift import Lift, listLifts
 from Person import Person, listPersons, listTimesTotal
-from enums import Floor
+from enums import Floor, PersonMode
 
 class LiftBlock:
     def __init__(self,posX, posY, width, heigth, lift: Lift, color):
@@ -26,7 +26,7 @@ class LiftBlock:
 
 class PersonBlock():
     def __init__(self,posX, posY, width, heigth, person: Person):
-        self.image = pygame.Surface((width,int(heigth*19/20)))
+        self.image = pygame.Surface((width,int(heigth*18/20)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (posX,posY)
         self.width = self.image.get_width()
@@ -36,11 +36,10 @@ class PersonBlock():
         self.person = person
     
     def draw(self):
-        self.posY = POS_LIFT_INIT_Y - (int(self.lift.position * FLOOR_HEIGHT))
+        if(self.person.mode == PersonMode.IN): return
+        if(self.person.mode == PersonMode.OUT): return
+        self.posY = POS_PERSON_INIT_Y - (int(self.person.floor * FLOOR_HEIGHT))
         screen.blit(self.image, (self.posX, self.posY))
-        cantInLift = font.render(str(len(self.lift.listPersonsIn)), True, (0,0,0))
-        screen.blit(cantInLift, (self.posX + self.width/2 - cantInLift.get_width()/2, self.posY))
-
 
 class FloorButton:
     def __init__(self,posX, posY, width, heigth, color, floor: Floor):
@@ -106,3 +105,4 @@ liftBlockMiddle = LiftBlock(POS_LIFT_INIT_X, POS_LIFT_INIT_Y, LIFT_WIDTH, LIFT_H
 floorButtonsList = [FloorButton(POS_FLOOR_INIT_X , POS_FLOOR_INIT_Y - floorNum * FLOOR_HEIGHT, FLOOR_WIDTH, FLOOR_HEIGHT, FLOOR_COLOR, floorNum)  for floorNum in Floor.keys()]
 
 listLiftBlocks = [liftBlockMiddle]
+listPersonBlocks = []

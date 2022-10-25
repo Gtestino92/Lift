@@ -19,9 +19,7 @@ pygame.display.set_caption("Lift")
 
 clock = pygame.time.Clock()
 
-## TODO: AGREGAR EN EVENTO PARA VISUALIZAR LINEA TEMPORAL DE CANT PERSONS!!!
-
-## TODO: falta corregir lo del time total en personas
+## TODO: AGREGAR EN EVENTO PARA VISUALIZAR LINEA TEMPORAL DE CANT PERSONS?
 
 while(running):
     screen.fill("Black")
@@ -32,6 +30,9 @@ while(running):
 
     for liftBlock in listLiftBlocks:
         liftBlock.draw()
+
+    for personBlock in listPersonBlocks:
+        personBlock.draw()
 
     try:
         updateLiftsState()
